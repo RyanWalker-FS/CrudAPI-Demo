@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import react, { useState, useEffect } from "react";
+import logo from "./logo.svg";
 import "./App.css";
+import { set } from "mongoose";
 
 function App() {
   const [students, setStudents] = useState([]);
@@ -9,21 +11,20 @@ function App() {
     process.env.NODE_ENV === "development"
       ? `http://localhost:8000`
       : process.env.REACT_APP_API_BASE;
-  let ignore = false;
   useEffect(() => {
+    let ignore = false;
     if (!ignore) {
       getStudents();
     }
     return () => {
       ignore = true;
     };
-  });
+  }, []);
   const getStudents = async () => {
     try {
       await fetch(`${API_BASE}/students`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           setStudents(data);
         });
     } catch (err) {
