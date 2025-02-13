@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
 
-function Dashboard() {
+function Student() {
   const API_BASE =
     process.env.NODE_ENV === "development"
-      ? `http://localhost:8000/api/v1`
-      : process.env.REACT_APP_BASE_URL;
+      ? `http://localhost:8000`
+      : process.env.REACT_APP_API_BASE;
   let ignore = false;
 
   const [students, setStudents] = useState([]);
@@ -42,6 +42,14 @@ function Dashboard() {
     <div className="App">
       <header className="App-header">
         <h1>Students:</h1>
+        {loading && <p>Loading...</p>}
+        {students.length > 0 && (
+          <ul>
+            {students.map((student) => (
+              <li key={student._id}>{student.name}</li>
+            ))}
+          </ul>
+        )}{" "}
         <Link to="/home">Home</Link>
         <Link to="/dashboard">Dashboard</Link>
       </header>
@@ -49,4 +57,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default Student;
