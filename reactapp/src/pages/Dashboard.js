@@ -44,6 +44,7 @@ function Dashboard() {
         <h1>Students:</h1>
         <Link to="/home">Home</Link>
         <Link to="/dashboard">Dashboard</Link>
+        <Link to="/student">Student</Link>
       </header>
     </div>
   );
