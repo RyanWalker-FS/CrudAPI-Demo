@@ -15,6 +15,7 @@
     "api": "cd api; nodemon server.js"
   },
   "dependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "react-scripts": "^5.0.1"
   }
 }
