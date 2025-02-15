@@ -5,6 +5,7 @@
     "node": "18.19.1"
   },
   "scripts": {
+    "build": "react-scripts build",
     "install-reactjs": "npm install --prefix reactjs",
     "install-api": "npm install --prefix api",
     "build-reactapp": "npm run build --prefix reactapp",
