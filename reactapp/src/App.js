@@ -3,10 +3,6 @@ import Home from "./pages/home";
 import Dashboard from "./pages/Dashboard";
 import Student from "./pages/student";
 function App() {
-  const API_BASE =
-    process.env.node_env === "development"
-      ? `http://localhost:8000/api/v1`
-      : process.env.REACT_APP_BASE_URL;
   return (
     <Router>
       <Routes>

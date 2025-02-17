@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import "../App.css";
 
 function Student() {
-  const BASE_URL =
+  const API_BASE =
     process.env.NODE_ENV === "development"
-      ? `http://localhost:8000/api/v1`
-      : process.env.REACT_APP_BASE_URL;
+      ? `http://localhost:8000`
+      : process.env.REACT_APP_API_URL;
   let ignore = false;
 
   const [students, setStudents] = useState([]);
@@ -18,11 +18,17 @@ function Student() {
   });
 
   const getStudents = async () => {
+    setLoading(true);
     try {
-      await fetch(`${BASE_URL}/api/v1/students`)
-        .then((res) => res.json())
+      await fetch(`${API_BASE}/students`)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(res.statusText);
+          }
+          return res.json();
+        })
         .then((data) => {
-          console.log("data fetched:", data);
+          console.log("API Data:", data); // Log the API data to the console
           setStudents(data);
         });
     } catch (err) {
@@ -36,7 +42,7 @@ function Student() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await fetch(`${BASE_URL}/students`, {
+      await fetch(`${API_BASE}/students`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,17 +73,47 @@ function Student() {
     };
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`${API_BASE}/students/${id}`, {
+        method: "DELETE",
+      });
+      setStudents(students.filter((student) => student._id !== id));
+    } catch (err) {
+      console.error("error:", err);
+      setError(err.message || "unexpected error");
+    }
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <h1>Students:</h1>
         {loading && <p>Loading...</p>}
         {students.length > 0 && (
-          <ul>
-            {students.map((student) => (
-              <li key={student._id}>{student.name}</li>
-            ))}
-          </ul>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Class</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student) => (
+                <tr key={student._id}>
+                  <td>{student._id}</td>
+                  <td>{student.name}</td>
+                  <td>{student.class}</td>
+                  <td>
+                    <button onClick={() => handleDelete(student._id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
         <form onSubmit={handleSubmit}>
           <label>
