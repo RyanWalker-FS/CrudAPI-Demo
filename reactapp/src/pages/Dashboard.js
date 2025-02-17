@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
 
@@ -7,11 +7,11 @@ function Dashboard() {
     process.env.NODE_ENV === "development"
       ? `http://localhost:8000/api/v1`
       : process.env.REACT_APP_BASE_URL;
-  let ignore = false;
+  let ignoreRef = useRef(false);
 
-  const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [setStudents] = useState([]);
+  const [setLoading] = useState(false);
+  const [setError] = useState(null);
 
   const getStudents = async () => {
     try {
@@ -30,12 +30,12 @@ function Dashboard() {
   };
 
   useEffect(() => {
-    if (!ignore) {
+    if (!ignoreRef.current) {
       getStudents();
+      return () => {
+        ignoreRef.current = true;
+      };
     }
-    return () => {
-      ignore = true;
-    };
   }, []);
 
   return (

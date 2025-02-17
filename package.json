@@ -1,0 +1,23 @@
+{
+  "name": "apiWithClient",
+  "version": "1.0.0",
+  "engines": {
+    "node": "18.19.1"
+  },
+  "scripts": {
+    "build": "react-scripts build",
+    "install-reactjs": "npm install --prefix reactjs",
+    "install-api": "npm install --prefix api",
+    "build-reactapp": "npm run build --prefix reactapp",
+    "heroku-postbuild": "concurrently \"npm:install-*\"; concurrently \"npm:build-*\"; ",
+    "start": "BROWSER=opera npm start --prefix api",
+    "dev:react": "concurrently --raw \"npm  run api\" \"npm run react\"",
+    "react": "cd reactjs && npm run start",
+    "api": "cd api; nodemon server.js"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.2",
+    "react-dom": "^19.0.0",
+    "react-scripts": "^5.0.1"
+  }
+}
