@@ -10,7 +10,8 @@ const app = express();
 app.use(express.static(path.join(reactapp, "build", "indext.html")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  console.log("Catch-all route executed");
+  res.sendFile(path.join(reactapp, "build", "index.html"));
 });
 app.use(cors());
 
