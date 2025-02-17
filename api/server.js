@@ -7,7 +7,7 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(reactapp, "build", "indext.html")));
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
