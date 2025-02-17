@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../App.css";
 
@@ -7,11 +7,12 @@ function Student() {
     process.env.NODE_ENV === "development"
       ? `http://localhost:8000`
       : process.env.REACT_APP_API_URL;
-  let ignore = false;
+
+  let ignoreRef = useRef(false);
 
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [setError] = useState(null);
   const [newStudent, setNewStudent] = useState({
     name: "",
     class: "",
@@ -65,12 +66,12 @@ function Student() {
   };
 
   useEffect(() => {
-    if (!ignore) {
+    if (!ignoreRef.current) {
       getStudents();
+      return () => {
+        ignoreRef.current = true;
+      };
     }
-    return () => {
-      ignore = true;
-    };
   }, []);
 
   const handleDelete = async (id) => {
