@@ -12,7 +12,7 @@ function Student() {
 
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [setError] = useState(null);
+  const [error, setError] = useState(null);
   const [newStudent, setNewStudent] = useState({
     name: "",
     class: "",
@@ -33,8 +33,8 @@ function Student() {
           setStudents(data);
         });
     } catch (err) {
-      console.error("error:", err);
       setError(err.message || "unexpected error");
+      console.error("error:", err);
     } finally {
       setLoading(false);
     }
@@ -61,7 +61,6 @@ function Student() {
         });
     } catch (err) {
       console.error("error:", err);
-      setError(err.message || "unexpected error");
     }
   };
 
@@ -82,7 +81,6 @@ function Student() {
       setStudents(students.filter((student) => student._id !== id));
     } catch (err) {
       console.error("error:", err);
-      setError(err.message || "unexpected error");
     }
   };
 

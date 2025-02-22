@@ -5,11 +5,11 @@ import "../App.css";
 function Dashboard() {
   const API_BASE =
     process.env.NODE_ENV === "development"
-      ? `http://localhost:8000/api/v1`
+      ? `http://localhost:8000`
       : process.env.REACT_APP_BASE_URL;
   let ignoreRef = useRef(false);
 
-  const [setStudents] = useState([]);
+  const [students, setStudents] = useState([]);
   const [setLoading] = useState(false);
   const [setError] = useState(null);
 
@@ -19,7 +19,6 @@ function Dashboard() {
         .then((res) => res.json())
         .then((data) => {
           console.log("data fetched:", data);
-          setStudents(data);
         });
     } catch (err) {
       console.error("error:", err);

@@ -6,14 +6,12 @@ const path = require("path");
 const cors = require("cors");
 
 const app = express();
+const reactapp = path.join(__dirname, "../reactapp");
 
-app.use(express.static(path.join(reactapp, "build", "indext.html")));
-
-app.get("*", (req, res) => {
-  console.log("Catch-all route executed");
-  res.sendFile(path.join(reactapp, "build", "index.html"));
-});
 app.use(cors());
+app.use(express.json()); // Move this line to the top
+
+app.use(express.static(path.join(reactapp, "build")));
 
 const PORT = process.env.PORT || 8000;
 
@@ -29,7 +27,6 @@ db.on("error", (error) => console.error(error));
 
 db.once("open", () => console.log("Connected to Database"));
 
-app.use(express.json());
 app.use("/students", studentsRouter);
 
 app.listen(PORT, () => {

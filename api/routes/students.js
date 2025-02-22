@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const Student = require("../models/student");
-const student = require("../models/student");
 
 const getStudent = async (req, res, next) => {
   let student;
