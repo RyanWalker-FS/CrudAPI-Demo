@@ -17,7 +17,7 @@ const getStudent = async (req, res, next) => {
 };
 
 // GET ALL
-router.get("/students", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const students = await Student.find();
     res.json(students);

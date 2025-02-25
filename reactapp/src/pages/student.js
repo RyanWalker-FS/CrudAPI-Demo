@@ -21,7 +21,7 @@ function Student() {
   const getStudents = async () => {
     setLoading(true);
     try {
-      await fetch(`${API_BASE}/students`)
+      await fetch(`${API_BASE}/student`)
         .then((res) => {
           if (!res.ok) {
             throw new Error(res.statusText);
@@ -43,7 +43,7 @@ function Student() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await fetch(`${API_BASE}/students`, {
+      await fetch(`${API_BASE}/student`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
