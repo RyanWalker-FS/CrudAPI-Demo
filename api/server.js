@@ -27,8 +27,14 @@ const studentsRouter = require("./routes/students");
 const authRouter = require("./routes/auth");
 
 app.use("/api/student", studentsRouter);
-app.use("api/auth", authRouter);
+app.use("/api/auth", authRouter);
+// look in the react build folder for static build
 
+// for any routes not defined by the api, assume it's a direct
+// request to a client-side route
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(reactapp));
+});
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
