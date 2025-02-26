@@ -21,7 +21,7 @@ db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));
 
 app.use(express.json());
-app.use(express.static(path.join(reactapp, "build")));
+app.use(express.static(path.join(__dirname, reactapp)));
 
 const studentsRouter = require("./routes/students");
 const authRouter = require("./routes/auth");
