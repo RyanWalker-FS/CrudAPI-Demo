@@ -5,7 +5,7 @@ import "../App.css";
 function Student() {
   const API_BASE =
     process.env.NODE_ENV === "development"
-      ? `http://localhost:8000`
+      ? `http://localhost:8000/api`
       : process.env.REACT_APP_API_URL;
 
   let ignoreRef = useRef(false);

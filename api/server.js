@@ -21,14 +21,13 @@ db.on("error", (error) => console.error(error));
 db.once("open", () => console.log("Connected to Database"));
 
 app.use(express.json());
-
 app.use(express.static(path.join(reactapp, "build")));
 
 const studentsRouter = require("./routes/students");
 const authRouter = require("./routes/auth");
 
-app.use("/student", studentsRouter);
-app.use("/auth", authRouter);
+app.use("/api/student", studentsRouter);
+app.use("api/auth", authRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
