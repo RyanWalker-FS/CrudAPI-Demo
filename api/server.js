@@ -33,7 +33,7 @@ app.use("/api/auth", authRouter);
 // for any routes not defined by the api, assume it's a direct
 // request to a client-side route
 app.get("/*", (req, res) => {
-  res.sendFile(path.join(reactapp));
+  res.sendFile(path.join(__dirname, reactapp, "index.html"));
 });
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
