@@ -36,3 +36,50 @@
     transform: rotate(360deg);
   }
 }
+
+.button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.button:hover {
+  background-color: #ccc;
+}
+
+.delete-button {
+  background-color: #ff0000;
+  color: #fff;
+}
+
+.update-button {
+  background-color: #27ab20;
+  color: #fff;
+  margin-left: 10px;
+}
+
+.submit-button {
+  background-color: #0000ff;
+  color: #fff;
+}
+
+.nav-links {
+  margin-top: 20px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #337ab7;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #23527c;
+}
+
+.nav-link:not(:last-child) {
+  margin-right: 20px;
+}

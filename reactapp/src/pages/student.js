@@ -11,15 +11,18 @@ function Student() {
   let ignoreRef = useRef(false);
 
   const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoadingState] = useState(false);
   const [error, setError] = useState(null);
   const [newStudent, setNewStudent] = useState({
     name: "",
     class: "",
   });
 
+  const [editing, setEditing] = useState({});
+  const [editedStudent, setEditedStudent] = useState({});
+
   const getStudents = async () => {
-    setLoading(true);
+    setLoadingState(true);
     try {
       await fetch(`${API_BASE}/student`)
         .then((res) => {
@@ -36,7 +39,7 @@ function Student() {
       setError(err.message || "unexpected error");
       console.error("error:", err);
     } finally {
-      setLoading(false);
+      setLoadingState(false);
     }
   };
 
@@ -84,10 +87,60 @@ function Student() {
     }
   };
 
+  const handleUpdate = async (id) => {
+    try {
+      await fetch(`${API_BASE}/student/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editedStudent),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("student updated:", data);
+          setStudents(
+            students.map((student) =>
+              student._id === id ? { ...student, ...editedStudent } : student
+            )
+          );
+          setEditing({});
+          setEditedStudent({});
+        });
+    } catch (err) {
+      console.error("error:", err);
+    }
+  };
+
+  const handleEdit = (id) => {
+    setEditing((prevEditing) => ({ ...prevEditing, [id]: true }));
+    const studentToEdit = students.find((student) => student._id === id);
+    setEditedStudent(studentToEdit);
+  };
+
+  const handleCancel = (id) => {
+    setEditing((prevEditing) => ({ ...prevEditing, [id]: false }));
+    setEditedStudent({});
+  };
+
+  const handleInputChange = (event) => {
+    setEditedStudent((prevEditedStudent) => ({
+      ...prevEditedStudent,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
   return (
     <div className="App">
       <header className="App-header">
+        {" "}
         <h1>Students:</h1>
+        <Link to="/home" className="nav-link">
+          Home
+        </Link>
+        <Link to="/dashboard" className="nav-link">
+          Dashboard
+        </Link>
         {loading && <p>Loading...</p>}
         {students.length > 0 && (
           <table>
@@ -102,10 +155,50 @@ function Student() {
               {students.map((student) => (
                 <tr key={student._id}>
                   <td>{student._id}</td>
-                  <td>{student.name}</td>
-                  <td>{student.class}</td>
                   <td>
-                    <button onClick={() => handleDelete(student._id)}>
+                    {editing[student._id] ? (
+                      <input
+                        type="text"
+                        name="name"
+                        value={editedStudent.name}
+                        onChange={handleInputChange}
+                      />
+                    ) : (
+                      <span>{student.name}</span>
+                    )}
+                  </td>
+                  <td>
+                    {editing[student._id] ? (
+                      <input
+                        type="text"
+                        name="class"
+                        value={editedStudent.class}
+                        onChange={handleInputChange}
+                      />
+                    ) : (
+                      <span>{student.class}</span>
+                    )}
+                  </td>
+                  <td>
+                    {editing[student._id] ? (
+                      <button
+                        className="button update-button"
+                        onClick={() => handleUpdate(student._id)}
+                      >
+                        Save
+                      </button>
+                    ) : (
+                      <button
+                        className="button update-button"
+                        onClick={() => handleEdit(student._id)}
+                      >
+                        Edit
+                      </button>
+                    )}
+                    <button
+                      className="button delete-button"
+                      onClick={() => handleDelete(student._id)}
+                    >
                       Delete
                     </button>
                   </td>
@@ -135,13 +228,12 @@ function Student() {
               }
             />
           </label>
-          <button type="submit">Add Student</button>
+          <button className="button submit-button" type="submit">
+            Add Student
+          </button>
         </form>
-        <Link to="/home">Home</Link>
-        <Link to="/dashboard">Dashboard</Link>
       </header>
     </div>
   );
 }
-
 export default Student;

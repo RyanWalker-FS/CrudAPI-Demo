@@ -10,8 +10,8 @@ function Dashboard() {
   let ignoreRef = useRef(false);
 
   const [students, setStudents] = useState([]);
-  const [setLoading] = useState(false);
-  const [setError] = useState(null);
+  const [loadingState, setLoadingState] = useState(false);
+  const [error, setError] = useState(null);
 
   const getStudents = async () => {
     try {
@@ -24,7 +24,7 @@ function Dashboard() {
       console.error("error:", err);
       setError(err.message || "unexpected error");
     } finally {
-      setLoading(false);
+      setLoadingState(false);
     }
   };
 
@@ -41,9 +41,15 @@ function Dashboard() {
     <div className="App">
       <header className="App-header">
         <h1>Students:</h1>
-        <Link to="/home">Home</Link>
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/student">Student</Link>
+        <Link to="/home" className="nav-link">
+          Home
+        </Link>
+        <Link to="/dashboard" className="nav-link">
+          Dashboard
+        </Link>
+        <Link to="/student" className="nav-link">
+          Student
+        </Link>
       </header>
     </div>
   );
