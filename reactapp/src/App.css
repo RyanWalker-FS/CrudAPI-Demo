@@ -74,6 +74,8 @@
   text-decoration: none;
   color: #337ab7;
   transition: color 0.3s ease-in-out;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-link:hover {

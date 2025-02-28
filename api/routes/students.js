@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const passport = require("passport");
+const passportService = require("../services/passport");
+const protectedRoute = passport.authenticate("jwt", { session: false });
 const Student = require("../models/student");
 
 const getStudent = async (req, res, next) => {
   let student;
   try {
-    student = await Student.findById(req.params.id);
+    student = await Student.findOne(req.params.id);
     if (student === null) {
       return res.status(404).json({ message: "Cannot find student" });
     }
@@ -17,7 +20,7 @@ const getStudent = async (req, res, next) => {
 };
 
 // GET ALL
-router.get("/", async (req, res) => {
+router.get("/", protectedRoute, async (req, res) => {
   try {
     const students = await Student.find();
     res.json(students);

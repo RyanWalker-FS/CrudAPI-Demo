@@ -7,6 +7,12 @@ function Home() {
     <div className="App">
       <header className="App-header">
         <h1>Students List Homepage</h1>
+        <Link to="/signup" className="nav-link">
+          Signup
+        </Link>
+        <Link to="/login" className="nav-link">
+          Login
+        </Link>
         <Link to="/dashboard" className="nav-link">
           Dashboard
         </Link>

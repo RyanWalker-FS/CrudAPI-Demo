@@ -1,33 +1,48 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+
 const validateEmail = (email) => {
-  return /^S+@\S.\S+$/.test(email);
+  return /^\S+@\S+\.\S+$/.test(email);
 };
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
     lowercase: true,
     required: "Email address is required",
-    validator: (v) => {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      return emailRegex.test(v);
-    },
+    validate: [validateEmail, "Email not valid"],
   },
   password: {
     type: String,
+    required: true,
   },
   created_at: {
     type: Date,
-    required: true,
     default: Date.now,
   },
 });
 
+// Hash password before saving
+// userSchema.pre("save", async function (next) {
+// 	if (!this.isModified("password")) return next();
+
+// 	try {
+// 		const salt = await bcrypt.genSalt(10);
+// 		this.password = await bcrypt.hash(this.password, salt);
+// 		next();
+// 	} catch (error) {
+// 		next(error);
+// 	}
+// });
+
+// userSchema.methods.comparePassword = async function (candidatePassword) {
+// 	return bcrypt.compare(candidatePassword, this.password);
+// };
+
 userSchema.pre("save", function (next) {
   const user = this;
-  if (user.isNew || this.isModified("password")) {
-    // run hashing and salting
+  if (user.isNew || user.isModified("password")) {
     bcrypt.genSalt(10, (error, salt) => {
       if (error) {
         return next(error);
@@ -41,8 +56,17 @@ userSchema.pre("save", function (next) {
       });
     });
   } else {
-    // skip hashing and salting
     next();
   }
 });
+
+userSchema.methods.comparePassword = function (candidatePassword, callback) {
+  bcrypt.compare(candidatePassword, this.password, function (error, isMatch) {
+    if (error) {
+      return callback(error);
+    }
+    callback(null, isMatch);
+  });
+};
+
 module.exports = mongoose.model("User", userSchema);
